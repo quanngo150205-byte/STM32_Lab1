@@ -188,7 +188,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  /* ==== PHA 1: A–C xanh, B–D đỏ ==== */
+
 	         all_off();
  80001f0:	f7ff ffac 	bl	800014c <all_off>
 	         HAL_GPIO_WritePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin, GPIO_PIN_SET);
@@ -241,7 +241,6 @@ int main(void)
  8000258:	f44f 60fa 	mov.w	r0, #2000	; 0x7d0
  800025c:	f000 f9bc 	bl	80005d8 <HAL_Delay>
 
-	         /* ==== PHA 2: B–D xanh, A–C đỏ ==== */
 	         all_off();
  8000260:	f7ff ff74 	bl	800014c <all_off>
 	         HAL_GPIO_WritePin(LED_GREEN_B_GPIO_Port, LED_GREEN_B_Pin, GPIO_PIN_SET);
@@ -270,24 +269,24 @@ int main(void)
 
 	         all_off();
  8000298:	f7ff ff58 	bl	800014c <all_off>
-	         HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_B_Pin, GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_A_Pin, GPIO_PIN_SET);
  800029c:	2201      	movs	r2, #1
- 800029e:	2102      	movs	r1, #2
+ 800029e:	2140      	movs	r1, #64	; 0x40
  80002a0:	480d      	ldr	r0, [pc, #52]	; (80002d8 <main+0xf8>)
  80002a2:	f000 fc1b 	bl	8000adc <HAL_GPIO_WritePin>
-	         HAL_GPIO_WritePin(LED_YELLOW_D_GPIO_Port, LED_YELLOW_D_Pin, GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_YELLOW_D_GPIO_Port, LED_YELLOW_C_Pin, GPIO_PIN_SET);
  80002a6:	2201      	movs	r2, #1
- 80002a8:	f44f 5180 	mov.w	r1, #4096	; 0x1000
+ 80002a8:	f44f 7100 	mov.w	r1, #512	; 0x200
  80002ac:	4809      	ldr	r0, [pc, #36]	; (80002d4 <main+0xf4>)
  80002ae:	f000 fc15 	bl	8000adc <HAL_GPIO_WritePin>
-	         HAL_GPIO_WritePin(LED_RED_A_GPIO_Port,    LED_RED_A_Pin,    GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_RED_A_GPIO_Port,    LED_RED_B_Pin,    GPIO_PIN_SET);
  80002b2:	2201      	movs	r2, #1
- 80002b4:	2120      	movs	r1, #32
+ 80002b4:	2101      	movs	r1, #1
  80002b6:	4807      	ldr	r0, [pc, #28]	; (80002d4 <main+0xf4>)
  80002b8:	f000 fc10 	bl	8000adc <HAL_GPIO_WritePin>
-	         HAL_GPIO_WritePin(LED_RED_C_GPIO_Port,    LED_RED_C_Pin,    GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_RED_C_GPIO_Port,    LED_RED_D_Pin,    GPIO_PIN_SET);
  80002bc:	2201      	movs	r2, #1
- 80002be:	f44f 7180 	mov.w	r1, #256	; 0x100
+ 80002be:	f44f 6100 	mov.w	r1, #2048	; 0x800
  80002c2:	4804      	ldr	r0, [pc, #16]	; (80002d4 <main+0xf4>)
  80002c4:	f000 fc0a 	bl	8000adc <HAL_GPIO_WritePin>
 	         HAL_Delay(YELLOW_TIME);

@@ -112,7 +112,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  /* ==== PHA 1: A–C xanh, B–D đỏ ==== */
+
 	         all_off();
 	         HAL_GPIO_WritePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin, GPIO_PIN_SET);
 	         HAL_GPIO_WritePin(LED_GREEN_C_GPIO_Port, LED_GREEN_C_Pin, GPIO_PIN_SET);
@@ -127,7 +127,6 @@ int main(void)
 	         HAL_GPIO_WritePin(LED_RED_D_GPIO_Port,    LED_RED_D_Pin,    GPIO_PIN_SET);
 	         HAL_Delay(YELLOW_TIME);
 
-	         /* ==== PHA 2: B–D xanh, A–C đỏ ==== */
 	         all_off();
 	         HAL_GPIO_WritePin(LED_GREEN_B_GPIO_Port, LED_GREEN_B_Pin, GPIO_PIN_SET);
 	         HAL_GPIO_WritePin(LED_GREEN_D_GPIO_Port, LED_GREEN_D_Pin, GPIO_PIN_SET);
@@ -136,11 +135,12 @@ int main(void)
 	         HAL_Delay(GREEN_TIME);
 
 	         all_off();
-	         HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_B_Pin, GPIO_PIN_SET);
-	         HAL_GPIO_WritePin(LED_YELLOW_D_GPIO_Port, LED_YELLOW_D_Pin, GPIO_PIN_SET);
-	         HAL_GPIO_WritePin(LED_RED_A_GPIO_Port,    LED_RED_A_Pin,    GPIO_PIN_SET);
-	         HAL_GPIO_WritePin(LED_RED_C_GPIO_Port,    LED_RED_C_Pin,    GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_A_Pin, GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_YELLOW_D_GPIO_Port, LED_YELLOW_C_Pin, GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_RED_A_GPIO_Port,    LED_RED_B_Pin,    GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_RED_C_GPIO_Port,    LED_RED_D_Pin,    GPIO_PIN_SET);
 	         HAL_Delay(YELLOW_TIME);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
