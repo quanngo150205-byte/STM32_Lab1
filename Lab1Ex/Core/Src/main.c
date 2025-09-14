@@ -175,7 +175,7 @@ int main(void)
   {
 	  DisplayDigit(digit);
 	  HAL_Delay(1000);
-	  Digit++;
+	  digit++;
 	  if (digit > 9) digit = 0;
     /* USER CODE END WHILE */
 
