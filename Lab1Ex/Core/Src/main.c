@@ -32,6 +32,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define RED_TIME    5000
+#define GREEN_TIME  3000
+#define YELLOW_TIME 2000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -54,6 +57,77 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+// Tắt toàn bộ đèn
+
+void all_off(void) {
+    HAL_GPIO_WritePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED_YELLOW_A_GPIO_Port, LED_YELLOW_A_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin, GPIO_PIN_RESET);
+
+    HAL_GPIO_WritePin(LED_RED_B_GPIO_Port, LED_RED_B_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_B_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED_GREEN_B_GPIO_Port, LED_GREEN_B_Pin, GPIO_PIN_RESET);
+
+    HAL_GPIO_WritePin(LED_RED_C_GPIO_Port, LED_RED_C_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED_YELLOW_C_GPIO_Port, LED_YELLOW_C_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED_GREEN_C_GPIO_Port, LED_GREEN_C_Pin, GPIO_PIN_RESET);
+
+    HAL_GPIO_WritePin(LED_RED_D_GPIO_Port, LED_RED_D_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED_YELLOW_D_GPIO_Port, LED_YELLOW_D_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED_GREEN_D_GPIO_Port, LED_GREEN_D_Pin, GPIO_PIN_RESET);
+}
+
+// Pha A–C xanh, B–D đỏ
+void phase_AC_green(void) {
+    all_off();
+
+    // A–C xanh
+    HAL_GPIO_WritePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_GREEN_C_GPIO_Port, LED_GREEN_C_Pin, GPIO_PIN_SET);
+
+    // B–D đỏ
+    HAL_GPIO_WritePin(LED_RED_B_GPIO_Port, LED_RED_B_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_RED_D_GPIO_Port, LED_RED_D_Pin, GPIO_PIN_SET);
+
+    HAL_Delay(GREEN_TIME);
+
+    // A–C vàng
+    all_off();
+    HAL_GPIO_WritePin(LED_YELLOW_A_GPIO_Port, LED_YELLOW_A_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_YELLOW_C_GPIO_Port, LED_YELLOW_C_Pin, GPIO_PIN_SET);
+
+    // B–D đỏ
+    HAL_GPIO_WritePin(LED_RED_B_GPIO_Port, LED_RED_B_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_RED_D_GPIO_Port, LED_RED_D_Pin, GPIO_PIN_SET);
+
+    HAL_Delay(YELLOW_TIME);
+}
+
+// Pha B–D xanh, A–C đỏ
+void phase_BD_green(void) {
+    all_off();
+
+    // B–D xanh
+    HAL_GPIO_WritePin(LED_GREEN_B_GPIO_Port, LED_GREEN_B_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_GREEN_D_GPIO_Port, LED_GREEN_D_Pin, GPIO_PIN_SET);
+
+    // A–C đỏ
+    HAL_GPIO_WritePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_RED_C_GPIO_Port, LED_RED_C_Pin, GPIO_PIN_SET);
+
+    HAL_Delay(GREEN_TIME);
+
+    // B–D vàng
+    all_off();
+    HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_B_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_YELLOW_D_GPIO_Port, LED_YELLOW_D_Pin, GPIO_PIN_SET);
+
+    // A–C đỏ
+    HAL_GPIO_WritePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_RED_C_GPIO_Port, LED_RED_C_Pin, GPIO_PIN_SET);
+
+    HAL_Delay(YELLOW_TIME);
+}
 
 /* USER CODE END 0 */
 
@@ -93,7 +167,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  //Ex3
+	  phase_AC_green();
+	  HAL_Delay(RED_TIME - GREEN_TIME - YELLOW_TIME);
+
+	          // Pha 2: B–D xanh, A–C đỏ
+	  phase_BD_green();
+	  HAL_Delay(RED_TIME - GREEN_TIME - YELLOW_TIME);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -150,13 +229,19 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LED_RED_A_Pin|LED_YELLOW_A_Pin|LED_GREEN_A_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LED_RED_A_Pin|LED_YELLOW_A_Pin|LED_GREEN_A_Pin|LED_RED_C_Pin
+                          |LED_YELLOW_C_Pin|LED_GREEN_C_Pin|LED_RED_D_Pin|LED_YELLOW_D_Pin
+                          |LED_YELLOW_DA13_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, LED_RED_B_Pin|LED_YELLOW_B_Pin|LED_GREEN_B_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : LED_RED_A_Pin LED_YELLOW_A_Pin LED_GREEN_A_Pin */
-  GPIO_InitStruct.Pin = LED_RED_A_Pin|LED_YELLOW_A_Pin|LED_GREEN_A_Pin;
+  /*Configure GPIO pins : LED_RED_A_Pin LED_YELLOW_A_Pin LED_GREEN_A_Pin LED_RED_C_Pin
+                           LED_YELLOW_C_Pin LED_GREEN_C_Pin LED_RED_D_Pin LED_YELLOW_D_Pin
+                           LED_YELLOW_DA13_Pin */
+  GPIO_InitStruct.Pin = LED_RED_A_Pin|LED_YELLOW_A_Pin|LED_GREEN_A_Pin|LED_RED_C_Pin
+                          |LED_YELLOW_C_Pin|LED_GREEN_C_Pin|LED_RED_D_Pin|LED_YELLOW_D_Pin
+                          |LED_YELLOW_DA13_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
