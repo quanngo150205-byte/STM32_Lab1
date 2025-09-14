@@ -80,8 +80,8 @@ void Error_Handler(void);
 #define LED_RED_D_GPIO_Port GPIOA
 #define LED_YELLOW_D_Pin GPIO_PIN_12
 #define LED_YELLOW_D_GPIO_Port GPIOA
-#define LED_YELLOW_DA13_Pin GPIO_PIN_13
-#define LED_YELLOW_DA13_GPIO_Port GPIOA
+#define LED_GREEN_D_Pin GPIO_PIN_13
+#define LED_GREEN_D_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
