@@ -57,77 +57,6 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-// Tắt toàn bộ đèn
-
-void all_off(void) {
-    HAL_GPIO_WritePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LED_YELLOW_A_GPIO_Port, LED_YELLOW_A_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin, GPIO_PIN_RESET);
-
-    HAL_GPIO_WritePin(LED_RED_B_GPIO_Port, LED_RED_B_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_B_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LED_GREEN_B_GPIO_Port, LED_GREEN_B_Pin, GPIO_PIN_RESET);
-
-    HAL_GPIO_WritePin(LED_RED_C_GPIO_Port, LED_RED_C_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LED_YELLOW_C_GPIO_Port, LED_YELLOW_C_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LED_GREEN_C_GPIO_Port, LED_GREEN_C_Pin, GPIO_PIN_RESET);
-
-    HAL_GPIO_WritePin(LED_RED_D_GPIO_Port, LED_RED_D_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LED_YELLOW_D_GPIO_Port, LED_YELLOW_D_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LED_GREEN_D_GPIO_Port, LED_GREEN_D_Pin, GPIO_PIN_RESET);
-}
-
-// Pha A–C xanh, B–D đ�?
-void phase_AC_green(void) {
-    all_off();
-
-    // A–C xanh
-    HAL_GPIO_WritePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LED_GREEN_C_GPIO_Port, LED_GREEN_C_Pin, GPIO_PIN_SET);
-
-    // B–D đ�?
-    HAL_GPIO_WritePin(LED_RED_B_GPIO_Port, LED_RED_B_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LED_RED_D_GPIO_Port, LED_RED_D_Pin, GPIO_PIN_SET);
-
-    HAL_Delay(GREEN_TIME);
-
-    // A–C vàng
-    all_off();
-    HAL_GPIO_WritePin(LED_YELLOW_A_GPIO_Port, LED_YELLOW_A_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LED_YELLOW_C_GPIO_Port, LED_YELLOW_C_Pin, GPIO_PIN_SET);
-
-    // B–D đ�?
-    HAL_GPIO_WritePin(LED_RED_B_GPIO_Port, LED_RED_B_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LED_RED_D_GPIO_Port, LED_RED_D_Pin, GPIO_PIN_SET);
-
-    HAL_Delay(YELLOW_TIME);
-}
-
-// Pha B–D xanh, A–C đ�?
-void phase_BD_green(void) {
-    all_off();
-
-    // B–D xanh
-    HAL_GPIO_WritePin(LED_GREEN_B_GPIO_Port, LED_GREEN_B_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LED_GREEN_D_GPIO_Port, LED_GREEN_D_Pin, GPIO_PIN_SET);
-
-    // A–C đ�?
-    HAL_GPIO_WritePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LED_RED_C_GPIO_Port, LED_RED_C_Pin, GPIO_PIN_SET);
-
-    HAL_Delay(GREEN_TIME);
-
-    // B–D vàng
-    all_off();
-    HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_B_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LED_YELLOW_D_GPIO_Port, LED_YELLOW_D_Pin, GPIO_PIN_SET);
-
-    // A–C đ�?
-    HAL_GPIO_WritePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LED_RED_C_GPIO_Port, LED_RED_C_Pin, GPIO_PIN_SET);
-
-    HAL_Delay(YELLOW_TIME);
-}
 
 /* USER CODE END 0 */
 
@@ -167,12 +96,55 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  phase_AC_green();
-	  HAL_Delay(RED_TIME - GREEN_TIME - YELLOW_TIME);
+	  /* ==== PHA 1: A-C XANH, B-D ĐỎ ==== */
+	         HAL_GPIO_WritePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin, GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_GREEN_C_GPIO_Port, LED_GREEN_C_Pin, GPIO_PIN_SET);
 
-	          // Pha 2: B–D xanh, A–C đ�?
-	  phase_BD_green();
-	  HAL_Delay(RED_TIME - GREEN_TIME - YELLOW_TIME);
+	         HAL_GPIO_WritePin(LED_RED_B_GPIO_Port, LED_RED_B_Pin, GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_RED_D_GPIO_Port, LED_RED_D_Pin, GPIO_PIN_SET);
+
+	         HAL_Delay(GREEN_TIME);
+
+	         // Tắt xanh, bật vàng cho A-C
+	         HAL_GPIO_WritePin(LED_GREEN_A_GPIO_Port, LED_GREEN_A_Pin, GPIO_PIN_RESET);
+	         HAL_GPIO_WritePin(LED_GREEN_C_GPIO_Port, LED_GREEN_C_Pin, GPIO_PIN_RESET);
+
+	         HAL_GPIO_WritePin(LED_YELLOW_A_GPIO_Port, LED_YELLOW_A_Pin, GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_YELLOW_C_GPIO_Port, LED_YELLOW_C_Pin, GPIO_PIN_SET);
+
+	         HAL_Delay(YELLOW_TIME);
+
+	         // Tắt vàng, để B-D vẫn đỏ trong suốt pha này
+	         HAL_GPIO_WritePin(LED_YELLOW_A_GPIO_Port, LED_YELLOW_A_Pin, GPIO_PIN_RESET);
+	         HAL_GPIO_WritePin(LED_YELLOW_C_GPIO_Port, LED_YELLOW_C_Pin, GPIO_PIN_RESET);
+
+	         HAL_GPIO_WritePin(LED_RED_B_GPIO_Port, LED_RED_B_Pin, GPIO_PIN_RESET);
+	         HAL_GPIO_WritePin(LED_RED_D_GPIO_Port, LED_RED_D_Pin, GPIO_PIN_RESET);
+
+	         /* ==== PHA 2: B-D XANH, A-C ĐỎ ==== */
+	         HAL_GPIO_WritePin(LED_GREEN_B_GPIO_Port, LED_GREEN_B_Pin, GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_GREEN_D_GPIO_Port, LED_GREEN_D_Pin, GPIO_PIN_SET);
+
+	         HAL_GPIO_WritePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin, GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_RED_C_GPIO_Port, LED_RED_C_Pin, GPIO_PIN_SET);
+
+	         HAL_Delay(GREEN_TIME);
+
+	         // Tắt xanh, bật vàng cho B-D
+	         HAL_GPIO_WritePin(LED_GREEN_B_GPIO_Port, LED_GREEN_B_Pin, GPIO_PIN_RESET);
+	         HAL_GPIO_WritePin(LED_GREEN_D_GPIO_Port, LED_GREEN_D_Pin, GPIO_PIN_RESET);
+
+	         HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_B_Pin, GPIO_PIN_SET);
+	         HAL_GPIO_WritePin(LED_YELLOW_D_GPIO_Port, LED_YELLOW_D_Pin, GPIO_PIN_SET);
+
+	         HAL_Delay(YELLOW_TIME);
+
+	         // Tắt vàng, reset A-C đỏ
+	         HAL_GPIO_WritePin(LED_YELLOW_B_GPIO_Port, LED_YELLOW_B_Pin, GPIO_PIN_RESET);
+	         HAL_GPIO_WritePin(LED_YELLOW_D_GPIO_Port, LED_YELLOW_D_Pin, GPIO_PIN_RESET);
+
+	         HAL_GPIO_WritePin(LED_RED_A_GPIO_Port, LED_RED_A_Pin, GPIO_PIN_RESET);
+	         HAL_GPIO_WritePin(LED_RED_C_GPIO_Port, LED_RED_C_Pin, GPIO_PIN_RESET);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
