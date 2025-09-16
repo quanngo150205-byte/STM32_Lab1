@@ -55,6 +55,8 @@
 	    LED_8_Pin,  LED_9_Pin, LED_10_Pin, LED_11_Pin
 	};
 
+	int secPos = 0, minPos = 0, hourPos = 0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -68,22 +70,44 @@ static void MX_GPIO_Init(void);
 /* USER CODE BEGIN 0 */
 
 // Hàm bật LED (active low)
-void setLED(int pos) {
+void clearAllClock(void) {
+    HAL_GPIO_WritePin(LED_1_GPIO_Port,  LED_1_Pin,  GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_2_GPIO_Port,  LED_2_Pin,  GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_3_GPIO_Port,  LED_3_Pin,  GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_4_GPIO_Port,  LED_4_Pin,  GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_5_GPIO_Port,  LED_5_Pin,  GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_6_GPIO_Port,  LED_6_Pin,  GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_7_GPIO_Port,  LED_7_Pin,  GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_8_GPIO_Port,  LED_8_Pin,  GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_9_GPIO_Port,  LED_9_Pin,  GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_10_GPIO_Port, LED_10_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_11_GPIO_Port, LED_11_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_12_GPIO_Port, LED_12_Pin, GPIO_PIN_SET);
+}
+
+void setNumberOnClock(int pos) {
     HAL_GPIO_WritePin(LED_PORT[pos], LED_PIN[pos], GPIO_PIN_RESET);
 }
 
 // Hàm tắt LED (active low)
-void resetLED(int pos) {
+void clearNumberOnClock(int pos) {
     HAL_GPIO_WritePin(LED_PORT[pos], LED_PIN[pos], GPIO_PIN_SET);
+}
+
+// Kiểm tra LED có còn kim nào đang đứng không
+int isLEDUsed(int pos) {
+    return (secPos == pos) || (minPos == pos) || (hourPos == pos);
 }
 
 // Cập nhật kim (giữ LED cũ sáng, chỉ tắt khi nhảy sang LED mới)
 void updateHand(int pos, int *prev_pos) {
-    if (*prev_pos != pos) {
-        resetLED(*prev_pos);   // tắt LED cũ
-        setLED(pos);           // bật LED mới
-        *prev_pos = pos;
-    }
+	if (*prev_pos != pos) {
+	    if (!isLEDUsed(*prev_pos)) {
+	    	clearNumberOnClock(*prev_pos);   // chỉ tắt khi không còn kim nào
+	    }
+	    setNumberOnClock(pos);               // bật LED mới
+	    *prev_pos = pos;
+	}
 }
 
 /* USER CODE END 0 */
@@ -123,8 +147,9 @@ int main(void)
   int prev_sec = 0, prev_min = 0, prev_hour = 0;
 
   // Ban đầu: bật LED_12 cho cả 3 kim
-  setLED(0);
+  setNumberOnClock(0);
   prev_sec = prev_min = prev_hour = 0;
+  clearAllClock();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
