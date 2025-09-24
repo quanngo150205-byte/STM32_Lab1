@@ -124,13 +124,13 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	 if(count >= 12) {
+		clearAllClock();
+		count = 0;
+	 }
 	 HAL_GPIO_TogglePin(LED_BLINK_GPIO_Port, LED_BLINK_Pin);
 	 setNumberOnClock(count);
 	 count++;
-	 if(count >= 12) {
-		 clearAllClock();
-		 count = 0;
-	 }
 	 HAL_Delay(1000);
 	  //ROOT
     /* USER CODE END WHILE */
