@@ -157,9 +157,9 @@ int main(void)
 		  blink = 0;
 	  }
 	  // Tinh vi tri led cua cac kim
-	  int secPos  = sec / 5;               // 60s → 12 LED
-	  int minPos  = min / 5;               // 60p → 12 LED
-	  int hourPos = (hour % 12);           // 12h → 12 LED
+	  secPos  = sec / 5;               // 60s → 12 LED
+	  minPos  = min / 5;               // 60p → 12 LED
+	  hourPos = (hour % 12);           // 12h → 12 LED
 	  updateHand(secPos,  &prev_sec);
 	  updateHand(minPos,  &prev_min);
 	  updateHand(hourPos, &prev_hour);
