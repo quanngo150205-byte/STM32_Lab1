@@ -117,7 +117,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   int count = 0;
   /* USER CODE END 2 */
-
+  clearAllClock();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -131,7 +131,7 @@ int main(void)
 		  clearAllClock();
 		  count = 0;
 	  }
-	  HAL_Delay(500);
+	  HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
