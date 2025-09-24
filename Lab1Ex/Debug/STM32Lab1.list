@@ -410,8 +410,8 @@ int main(void)
  8000372:	68f8      	ldr	r0, [r7, #12]
  8000374:	f7ff ff86 	bl	8000284 <updateHand>
 
-	  HAL_Delay(200); // de cho 1 giay led dong ho nhay 1 lan
- 8000378:	20c8      	movs	r0, #200	; 0xc8
+	  HAL_Delay(20); // de cho 1 giay led dong ho nhay 1 lan
+ 8000378:	2014      	movs	r0, #20
  800037a:	f000 f981 	bl	8000680 <HAL_Delay>
 
 	  blink++;
