@@ -123,15 +123,11 @@ int main(void)
   while (1)
   {
 	  HAL_GPIO_TogglePin(LED_BLINK_GPIO_Port, LED_BLINK_Pin);
-	  if(count <= 11){
-	  HAL_GPIO_WritePin(LED_PORT[count], LED_PIN[count], GPIO_PIN_RESET);
-	  }
-
-	  if(count >=12){
+	  if(count == 0){
 		  clearAllClock();
-		  count = 0;
 	  }
-	  count++;
+	  HAL_GPIO_WritePin(LED_PORT[count], LED_PIN[count], GPIO_PIN_RESET);
+	  count = (count + 1) % 12;
 	  HAL_Delay(1000);
     /* USER CODE END WHILE */
 
