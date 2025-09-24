@@ -165,7 +165,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  uint8_t digit = 0;
+  int digit = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
