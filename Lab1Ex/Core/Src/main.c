@@ -145,7 +145,7 @@ int main(void)
 
   // Ban dau bat LED cho ca 3 kim
   setNumberOnClock(0);
-
+  prev_sec = prev_min = prev_hour = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
