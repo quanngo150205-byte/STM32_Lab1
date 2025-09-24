@@ -152,7 +152,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(blink <= 4){
+	  if(blink == 4){
 		  HAL_GPIO_TogglePin(GPIOA, LED_BLINK_Pin);
 		  blink = 0;
 	  }

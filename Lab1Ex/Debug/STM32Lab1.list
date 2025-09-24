@@ -352,10 +352,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(blink <= 4){
+	  if(blink == 4){
  800030c:	6a7b      	ldr	r3, [r7, #36]	; 0x24
  800030e:	2b04      	cmp	r3, #4
- 8000310:	dc05      	bgt.n	800031e <main+0x56>
+ 8000310:	d105      	bne.n	800031e <main+0x56>
 		  HAL_GPIO_TogglePin(GPIOA, LED_BLINK_Pin);
  8000312:	2120      	movs	r1, #32
  8000314:	4828      	ldr	r0, [pc, #160]	; (80003b8 <main+0xf0>)
