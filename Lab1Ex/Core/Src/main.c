@@ -138,7 +138,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-
+  int blink = 0;
   int hour = 0, min = 0, sec = 0;
   int prev_sec = 0, prev_min = 0, prev_hour = 0;
   clearAllClock();
@@ -152,6 +152,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(blink <= 4){
+		  HAL_GPIO_TogglePin(GPIOA, LED_BLINK_Pin);
+		  blink = 0;
+	  }
 	  // Tinh vi tri led cua cac kim
 	  int secPos  = sec / 5;               // 60s → 12 LED
 	  int minPos  = min / 5;               // 60p → 12 LED
@@ -160,8 +164,9 @@ int main(void)
 	  updateHand(minPos,  &prev_min);
 	  updateHand(hourPos, &prev_hour);
 
-	  HAL_Delay(200);
+	  HAL_Delay(200); // de cho 1 giay led dong ho nhay 1 lan
 
+	  blink++;
 	  sec++;
 	  if (sec >= 60) {
 		  sec = 0;
