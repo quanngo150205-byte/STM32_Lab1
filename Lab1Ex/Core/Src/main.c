@@ -27,7 +27,19 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+	GPIO_TypeDef* LED_PORT[12] = {
+    LED_12_GPIO_Port, LED_1_GPIO_Port, LED_2_GPIO_Port, LED_3_GPIO_Port,
+    LED_4_GPIO_Port,  LED_5_GPIO_Port, LED_6_GPIO_Port, LED_7_GPIO_Port,
+    LED_8_GPIO_Port,  LED_9_GPIO_Port, LED_10_GPIO_Port, LED_11_GPIO_Port
+	};
 
+	uint16_t LED_PIN[12] = {
+	    LED_12_Pin, LED_1_Pin, LED_2_Pin, LED_3_Pin,
+	    LED_4_Pin,  LED_5_Pin, LED_6_Pin, LED_7_Pin,
+	    LED_8_Pin,  LED_9_Pin, LED_10_Pin, LED_11_Pin
+	};
+
+	int secPos = 0, minPos = 0, hourPos = 0;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -36,7 +48,47 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+	// Ham tat All LED (active low)
+	void clearAllClock(void) {
+	    HAL_GPIO_WritePin(LED_1_GPIO_Port,  LED_1_Pin,  GPIO_PIN_SET);
+	    HAL_GPIO_WritePin(LED_2_GPIO_Port,  LED_2_Pin,  GPIO_PIN_SET);
+	    HAL_GPIO_WritePin(LED_3_GPIO_Port,  LED_3_Pin,  GPIO_PIN_SET);
+	    HAL_GPIO_WritePin(LED_4_GPIO_Port,  LED_4_Pin,  GPIO_PIN_SET);
+	    HAL_GPIO_WritePin(LED_5_GPIO_Port,  LED_5_Pin,  GPIO_PIN_SET);
+	    HAL_GPIO_WritePin(LED_6_GPIO_Port,  LED_6_Pin,  GPIO_PIN_SET);
+	    HAL_GPIO_WritePin(LED_7_GPIO_Port,  LED_7_Pin,  GPIO_PIN_SET);
+	    HAL_GPIO_WritePin(LED_8_GPIO_Port,  LED_8_Pin,  GPIO_PIN_SET);
+	    HAL_GPIO_WritePin(LED_9_GPIO_Port,  LED_9_Pin,  GPIO_PIN_SET);
+	    HAL_GPIO_WritePin(LED_10_GPIO_Port, LED_10_Pin, GPIO_PIN_SET);
+	    HAL_GPIO_WritePin(LED_11_GPIO_Port, LED_11_Pin, GPIO_PIN_SET);
+	    HAL_GPIO_WritePin(LED_12_GPIO_Port, LED_12_Pin, GPIO_PIN_SET);
+	}
 
+	// Ham bat LED
+	void setNumberOnClock(int pos) {
+	    HAL_GPIO_WritePin(LED_PORT[pos], LED_PIN[pos], GPIO_PIN_RESET);
+	}
+
+	// Ham tat LED
+	void clearNumberOnClock(int pos) {
+	    HAL_GPIO_WritePin(LED_PORT[pos], LED_PIN[pos], GPIO_PIN_SET);
+	}
+
+	// Kiem tra xem den do con bieu dien kim nao khong
+	int isLEDUsed(int pos) {
+	    return (secPos == pos) || (minPos == pos) || (hourPos == pos);
+	}
+
+	// Cap nhat kim dong ho
+	void updateHand(int pos, int *prev_pos) {
+		if (*prev_pos != pos) {
+		    if (!isLEDUsed(*prev_pos)) {
+		    	clearNumberOnClock(*prev_pos);
+		    }
+		    setNumberOnClock(pos);
+		    *prev_pos = pos;
+		}
+	}
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -47,6 +99,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -83,7 +136,15 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
+  MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
+
+  int hour = 0, min = 0, sec = 0;
+  int prev_sec = 0, prev_min = 0, prev_hour = 0;
+  clearAllClock();
+
+  // Ban dau bat LED cho ca 3 kim
+  setNumberOnClock(0);
 
   /* USER CODE END 2 */
 
@@ -91,7 +152,28 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  //ROOT
+	  // Tinh vi tri led cua cac kim
+	  int secPos  = sec / 5;               // 60s → 12 LED
+	  int minPos  = min / 5;               // 60p → 12 LED
+	  int hourPos = (hour % 12);           // 12h → 12 LED
+	  updateHand(secPos,  &prev_sec);
+	  updateHand(minPos,  &prev_min);
+	  updateHand(hourPos, &prev_hour);
+
+	  HAL_Delay(200);
+
+	  sec++;
+	  if (sec >= 60) {
+		  sec = 0;
+		  min++;
+	  }
+	  if (min >= 60) {
+		  min = 0;
+		  hour++;
+	  }
+	  if (hour >= 12) {
+		  hour = 0;
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -132,6 +214,39 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, LED_1_Pin|LED_2_Pin|LED_BLINK_Pin|LED_3_Pin
+                          |LED_4_Pin|LED_5_Pin|LED_6_Pin|LED_7_Pin
+                          |LED_8_Pin|LED_9_Pin|LED_10_Pin|LED_11_Pin
+                          |LED_12_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : LED_1_Pin LED_2_Pin LED_BLINK_Pin LED_3_Pin
+                           LED_4_Pin LED_5_Pin LED_6_Pin LED_7_Pin
+                           LED_8_Pin LED_9_Pin LED_10_Pin LED_11_Pin
+                           LED_12_Pin */
+  GPIO_InitStruct.Pin = LED_1_Pin|LED_2_Pin|LED_BLINK_Pin|LED_3_Pin
+                          |LED_4_Pin|LED_5_Pin|LED_6_Pin|LED_7_Pin
+                          |LED_8_Pin|LED_9_Pin|LED_10_Pin|LED_11_Pin
+                          |LED_12_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
 }
 
 /* USER CODE BEGIN 4 */
