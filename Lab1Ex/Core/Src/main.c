@@ -55,7 +55,6 @@
 	    LED_8_Pin,  LED_9_Pin, LED_10_Pin, LED_11_Pin
 	};
 
-	int secPos = 0, minPos = 0, hourPos = 0;
 
 /* USER CODE END PV */
 
@@ -83,31 +82,6 @@ void clearAllClock(void) {
     HAL_GPIO_WritePin(LED_10_GPIO_Port, LED_10_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(LED_11_GPIO_Port, LED_11_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(LED_12_GPIO_Port, LED_12_Pin, GPIO_PIN_SET);
-}
-
-void setNumberOnClock(int pos) {
-    HAL_GPIO_WritePin(LED_PORT[pos], LED_PIN[pos], GPIO_PIN_RESET);
-}
-
-// Hàm tắt LED (active low)
-void clearNumberOnClock(int pos) {
-    HAL_GPIO_WritePin(LED_PORT[pos], LED_PIN[pos], GPIO_PIN_SET);
-}
-
-// Kiểm tra LED có còn kim nào đang đứng không
-int isLEDUsed(int pos) {
-    return (secPos == pos) || (minPos == pos) || (hourPos == pos);
-}
-
-// Cập nhật kim (giữ LED cũ sáng, chỉ tắt khi nhảy sang LED mới)
-void updateHand(int pos, int *prev_pos) {
-	if (*prev_pos != pos) {
-	    if (!isLEDUsed(*prev_pos)) {
-	    	clearNumberOnClock(*prev_pos);   // chỉ tắt khi không còn kim nào
-	    }
-	    setNumberOnClock(pos);               // bật LED mới
-	    *prev_pos = pos;
-	}
 }
 
 /* USER CODE END 0 */
@@ -141,43 +115,23 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-
+  int count = 0;
   /* USER CODE END 2 */
-  int hour = 0, min = 0, sec = 0;
-  int prev_sec = 0, prev_min = 0, prev_hour = 0;
 
-  // Ban đầu: bật LED_12 cho cả 3 kim
-  setNumberOnClock(0);
-  prev_sec = prev_min = prev_hour = 0;
-  clearAllClock();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  // Tính vị trí LED của các kim
-	  int secPos  = sec / 5;               // 60s → 12 LED
-	  int minPos  = min / 5;               // 60p → 12 LED
-	  int hourPos = (hour % 12);           // 12h → 12 LED
-
-	  updateHand(secPos,  &prev_sec);
-	  updateHand(minPos,  &prev_min);
-	  updateHand(hourPos, &prev_hour);
-
-	  HAL_Delay(200); // 200ms thực = 1s mô phỏng
-
-	  // Tăng thời gian mô phỏng
-	  sec++;
-	  if (sec >= 60) {
-	      sec = 0;
-	      min++;
+	  HAL_GPIO_TogglePin(LED_BLINK_GPIO_Port, LED_BLINK_Pin);
+	  if(count <= 11){
+	  HAL_GPIO_WritePin(LED_PORT[count], LED_PIN[count], GPIO_PIN_RESET);
+	  count++;
 	  }
-	  if (min >= 60) {
-	      min = 0;
-	      hour++;
+	  else {
+		  clearAllClock();
+		  count = 0;
 	  }
-	  if (hour >= 12) {
-	      hour = 0;
-	  }
+	  HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -233,16 +187,19 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LED_1_Pin|LED_2_Pin|LED_3_Pin|LED_4_Pin
-                          |LED_5_Pin|LED_6_Pin|LED_7_Pin|LED_8_Pin
-                          |LED_9_Pin|LED_10_Pin|LED_11_Pin|LED_12_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LED_1_Pin|LED_2_Pin|LED_BLINK_Pin|LED_3_Pin
+                          |LED_4_Pin|LED_5_Pin|LED_6_Pin|LED_7_Pin
+                          |LED_8_Pin|LED_9_Pin|LED_10_Pin|LED_11_Pin
+                          |LED_12_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : LED_1_Pin LED_2_Pin LED_3_Pin LED_4_Pin
-                           LED_5_Pin LED_6_Pin LED_7_Pin LED_8_Pin
-                           LED_9_Pin LED_10_Pin LED_11_Pin LED_12_Pin */
-  GPIO_InitStruct.Pin = LED_1_Pin|LED_2_Pin|LED_3_Pin|LED_4_Pin
-                          |LED_5_Pin|LED_6_Pin|LED_7_Pin|LED_8_Pin
-                          |LED_9_Pin|LED_10_Pin|LED_11_Pin|LED_12_Pin;
+  /*Configure GPIO pins : LED_1_Pin LED_2_Pin LED_BLINK_Pin LED_3_Pin
+                           LED_4_Pin LED_5_Pin LED_6_Pin LED_7_Pin
+                           LED_8_Pin LED_9_Pin LED_10_Pin LED_11_Pin
+                           LED_12_Pin */
+  GPIO_InitStruct.Pin = LED_1_Pin|LED_2_Pin|LED_BLINK_Pin|LED_3_Pin
+                          |LED_4_Pin|LED_5_Pin|LED_6_Pin|LED_7_Pin
+                          |LED_8_Pin|LED_9_Pin|LED_10_Pin|LED_11_Pin
+                          |LED_12_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
