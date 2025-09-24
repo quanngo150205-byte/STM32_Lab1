@@ -196,9 +196,9 @@ int main(void)
  80001fa:	2120      	movs	r1, #32
  80001fc:	480f      	ldr	r0, [pc, #60]	; (800023c <main+0x5c>)
  80001fe:	f000 fc1b 	bl	8000a38 <HAL_GPIO_TogglePin>
-	  if(count <= 12){
+	  if(count <= 11){
  8000202:	687b      	ldr	r3, [r7, #4]
- 8000204:	2b0c      	cmp	r3, #12
+ 8000204:	2b0b      	cmp	r3, #11
  8000206:	dc0f      	bgt.n	8000228 <main+0x48>
 	  HAL_GPIO_WritePin(LED_PORT[count], LED_PIN[count], GPIO_PIN_RESET);
  8000208:	4a0d      	ldr	r2, [pc, #52]	; (8000240 <main+0x60>)
