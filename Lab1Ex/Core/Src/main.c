@@ -106,21 +106,19 @@ int main(void)
 	  if(count == 0){
 		  HAL_GPIO_WritePin(GPIOA, LED_YELLOW_A_Pin, GPIO_PIN_SET);
 		  HAL_GPIO_WritePin(GPIOA, LED_RED_A_Pin, GPIO_PIN_RESET);
-		  count++;
 	  }
 
 	  if (count == 5){
 		  HAL_GPIO_WritePin(GPIOA, LED_RED_A_Pin, GPIO_PIN_SET);
 		  HAL_GPIO_WritePin(GPIOA, LED_GREEN_A_Pin, GPIO_PIN_RESET);
-		  count++;
 	  }
 
 	  if (count == 8){
 		  HAL_GPIO_WritePin(GPIOA, LED_GREEN_A_Pin, GPIO_PIN_SET);
 		  HAL_GPIO_WritePin(GPIOA, LED_YELLOW_A_Pin, GPIO_PIN_RESET);
-		  count++;
 	  }
 
+	  count++;
 	  HAL_Delay(1000);
     /* USER CODE END WHILE */
 
