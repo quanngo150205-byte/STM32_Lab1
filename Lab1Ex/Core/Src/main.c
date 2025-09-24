@@ -164,7 +164,7 @@ int main(void)
 	  updateHand(minPos,  &prev_min);
 	  updateHand(hourPos, &prev_hour);
 
-	  HAL_Delay(20); // de cho 1 giay led dong ho nhay 1 lan
+	  HAL_Delay(50); // de cho 1 giay led dong ho nhay 1 lan
 
 	  blink++;
 	  sec++;
