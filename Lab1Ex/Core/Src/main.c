@@ -152,6 +152,18 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if (sec >= 60) {
+		  sec = 0;
+		  min++;
+	  }
+	  if (min >= 60) {
+		  min = 0;
+		  hour++;
+	  }
+	  if (hour >= 12) {
+		  hour = 0;
+	  }
+
 	  if(blink == 5){
 		  HAL_GPIO_TogglePin(GPIOA, LED_BLINK_Pin);
 		  blink = 0;
@@ -164,21 +176,12 @@ int main(void)
 	  updateHand(minPos,  &prev_min);
 	  updateHand(hourPos, &prev_hour);
 
-	  HAL_Delay(50); // de cho 1 giay led dong ho nhay 1 lan
-
 	  blink++;
 	  sec++;
-	  if (sec >= 60) {
-		  sec = 0;
-		  min++;
-	  }
-	  if (min >= 60) {
-		  min = 0;
-		  hour++;
-	  }
-	  if (hour >= 12) {
-		  hour = 0;
-	  }
+	  HAL_Delay(50); // de cho 1 giay led dong ho nhay 1 lan
+
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
