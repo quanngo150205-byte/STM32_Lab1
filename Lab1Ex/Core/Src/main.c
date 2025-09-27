@@ -27,11 +27,11 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -42,7 +42,15 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+typedef enum {
+    STATE_GREEN1_RED2,
+    STATE_YELLOW1_RED2,
+    STATE_RED1_GREEN2,
+    STATE_RED1_YELLOW2
+} TrafficState;
 
+TrafficState state = STATE_GREEN1_RED2;
+int timer = 3;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -203,8 +211,6 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
   clearAllLed();
-  int count = 0;
-  int digit = 10;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -213,46 +219,41 @@ int main(void)
   {
 	  HAL_GPIO_TogglePin(GPIOA, LED_BLINK_Pin);
 
-	  if(count == 10){
-		 count = 0;
-	  }
+	  displayDigit(timer);
+	  if (timer <= 0) {
+	      // Chuyen trang thai
+	      switch (state) {
+	          case STATE_GREEN1_RED2:
+	              GreenToYellow1();
+	              YellowToRed2();
+	              state = STATE_YELLOW1_RED2;
+	              timer = 2;
+	              break;
 
-	  if(digit > 10){
-		  digit = 0;
-	  }
+	          case STATE_YELLOW1_RED2:
+	              YellowToRed1();
+	              RedToGreen2();
+	              state = STATE_RED1_GREEN2;
+	              timer = 3;
+	              break;
 
-	  if(count == 0){
-		 RedToGreen1();
-		 YellowToRed2();
-	  }
+	          case STATE_RED1_GREEN2:
+	              GreenToYellow2();
+	              state = STATE_RED1_YELLOW2;
+	              timer = 2;
+	              break;
 
-	  if(count == 3){
-		 GreenToYellow1();
+	          case STATE_RED1_YELLOW2:
+	              YellowToRed2();
+	              RedToGreen1();
+	              state = STATE_GREEN1_RED2;
+	              timer = 3;
+	              break;
+	      }
 	  }
-
-	  if(count == 5){
-		 YellowToRed1();
-		 RedToGreen2();
-	  }
-
-	  if(count == 8){
-		 GreenToYellow2();
-	  }
-
-	  if (digit >= 8 && digit <=10){
-		  displayDigit(digit - 8);
-	  }
-
-	  if(digit >=6 && digit <= 7){
-		  displayDigit(digit - 6);
-	  }
-
-	  if(digit >= 1 && digit <= 5){
-		  displayDigit(digit - 1);
-	  }
-	  count++;
-	  digit--;
+	  timer--;
 	  HAL_Delay(1000);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
