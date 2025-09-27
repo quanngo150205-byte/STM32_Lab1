@@ -50,7 +50,7 @@ typedef enum {
 } TrafficState;
 
 TrafficState state = STATE_GREEN1_RED2;
-int timer = 0;
+int timer = -1;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -212,48 +212,39 @@ int main(void)
   /* USER CODE BEGIN 2 */
   clearAllLed();
   /* USER CODE END 2 */
-  RedToGreen1();
-  YellowToRed2();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
 	  HAL_GPIO_TogglePin(GPIOA, LED_BLINK_Pin);
 
-	  if (timer <= 0) {
-	      // Chuyen trang thai
-	      switch (state) {
-	          case STATE_GREEN1_RED2:
-	              GreenToYellow1();
-	              YellowToRed2();
-	              state = STATE_YELLOW1_RED2;
-	              timer = 1;
-	              break;
-
-	          case STATE_YELLOW1_RED2:
-	              YellowToRed1();
-	              RedToGreen2();
-	              state = STATE_RED1_GREEN2;
-	              timer = 4;
-	              break;
-
-	          case STATE_RED1_GREEN2:
-	              GreenToYellow2();
-	              state = STATE_RED1_YELLOW2;
-	              timer = 1;
-	              break;
-
-	          case STATE_RED1_YELLOW2:
-	              RedToGreen1();
-	              YellowToRed2();
-	              state = STATE_GREEN1_RED2;
-	              timer = 2;
-	              break;
-	      }
+	  if(state == STATE_RED1_GREEN2 && timer == 1){
+  		  GreenToYellow2();
+  		  state = STATE_RED1_YELLOW2;
 	  }
+	  if(timer < 0){
+		  switch(state){
+		  	  case STATE_GREEN1_RED2:
+		  		  GreenToYellow1();
+		  		  YellowToRed2();
+		  		  state = STATE_YELLOW1_RED2;
+		  		  timer = 1;
+		  		  break;
+		  	  case STATE_YELLOW1_RED2:
+		  		  YellowToRed1();
+		  		  RedToGreen2();
+		  		  state = STATE_RED1_GREEN2;
+		  		  timer = 4;
+		  	  case STATE_RED1_YELLOW2:
+		  		  RedToGreen1();
+		  		  YellowToRed2();
+		  		  state = STATE_GREEN1_RED2;
+		  		  timer = 2;
+		  }
+	  }
+
 	  displayDigit(timer);
 	  timer--;
-
 	  HAL_Delay(1000);
 
     /* USER CODE END WHILE */
