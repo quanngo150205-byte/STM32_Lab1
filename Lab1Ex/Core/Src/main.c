@@ -204,7 +204,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   clearAllLed();
   int count = 0;
-  int digit = 0;
+  int digit = 10;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -239,19 +239,19 @@ int main(void)
 		 GreenToYellow2();
 	  }
 
-	  if (digit >= 0 && digit <=2){
-		  displayDigit(digit);
+	  if (digit >= 8 && digit <=10){
+		  displayDigit(digit - 8);
 	  }
 
-	  if(digit >=3 && digit <= 5){
-		  displayDigit(digit - 3);
-	  }
-
-	  if(digit >= 6 && digit <= 10){
+	  if(digit >=6 && digit <= 7){
 		  displayDigit(digit - 6);
 	  }
+
+	  if(digit >= 1 && digit <= 5){
+		  displayDigit(digit - 1);
+	  }
 	  count++;
-	  digit++;
+	  digit--;
 	  HAL_Delay(1000);
     /* USER CODE END WHILE */
 
