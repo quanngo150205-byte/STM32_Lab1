@@ -629,11 +629,11 @@ int main(void)
  800052a:	4827      	ldr	r0, [pc, #156]	; (80005c8 <main+0xb4>)
  800052c:	f000 fc6a 	bl	8000e04 <HAL_GPIO_TogglePin>
 
-	  if (timer <= 0) {
+	  if (timer < 0) {
  8000530:	4b26      	ldr	r3, [pc, #152]	; (80005cc <main+0xb8>)
  8000532:	681b      	ldr	r3, [r3, #0]
  8000534:	2b00      	cmp	r3, #0
- 8000536:	dc36      	bgt.n	80005a6 <main+0x92>
+ 8000536:	da36      	bge.n	80005a6 <main+0x92>
 	      // Chuyen trang thai
 	      switch (state) {
  8000538:	4b25      	ldr	r3, [pc, #148]	; (80005d0 <main+0xbc>)
