@@ -235,11 +235,13 @@ int main(void)
 		  		  RedToGreen2();
 		  		  state = STATE_RED1_GREEN2;
 		  		  timer = 4;
+		  		  break;
 		  	  case STATE_RED1_YELLOW2:
 		  		  RedToGreen1();
 		  		  YellowToRed2();
 		  		  state = STATE_GREEN1_RED2;
 		  		  timer = 2;
+		  		  break;
 		  }
 	  }
 
