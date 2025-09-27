@@ -37,13 +37,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_macro  0001562c  00000000  00000000  00024760  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0000466c  00000000  00000000  00039d8c  2**0
+ 17 .debug_line   0000466e  00000000  00000000  00039d8c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    00079c71  00000000  00000000  0003e3f8  2**0
+ 18 .debug_str    00079c71  00000000  00000000  0003e3fa  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  000b8069  2**0
+ 19 .comment      00000053  00000000  00000000  000b806b  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00000e14  00000000  00000000  000b80bc  2**2
+ 20 .debug_frame  00000e14  00000000  00000000  000b80c0  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -633,106 +633,105 @@ int main(void)
  8000532:	4828      	ldr	r0, [pc, #160]	; (80005d4 <main+0xc0>)
  8000534:	f000 fc6c 	bl	8000e10 <HAL_GPIO_TogglePin>
 
-	  timer--;
+	  if (timer <= 0) {
  8000538:	4b27      	ldr	r3, [pc, #156]	; (80005d8 <main+0xc4>)
  800053a:	681b      	ldr	r3, [r3, #0]
- 800053c:	3b01      	subs	r3, #1
- 800053e:	4a26      	ldr	r2, [pc, #152]	; (80005d8 <main+0xc4>)
- 8000540:	6013      	str	r3, [r2, #0]
-
-	  if (timer <= 0) {
- 8000542:	4b25      	ldr	r3, [pc, #148]	; (80005d8 <main+0xc4>)
- 8000544:	681b      	ldr	r3, [r3, #0]
- 8000546:	2b00      	cmp	r3, #0
- 8000548:	dc38      	bgt.n	80005bc <main+0xa8>
+ 800053c:	2b00      	cmp	r3, #0
+ 800053e:	dc39      	bgt.n	80005b4 <main+0xa0>
 	      // Chuyen trang thai
 	      switch (state) {
- 800054a:	4b24      	ldr	r3, [pc, #144]	; (80005dc <main+0xc8>)
- 800054c:	781b      	ldrb	r3, [r3, #0]
- 800054e:	2b03      	cmp	r3, #3
- 8000550:	d835      	bhi.n	80005be <main+0xaa>
- 8000552:	a201      	add	r2, pc, #4	; (adr r2, 8000558 <main+0x44>)
- 8000554:	f852 f023 	ldr.w	pc, [r2, r3, lsl #2]
- 8000558:	08000569 	.word	0x08000569
- 800055c:	0800057f 	.word	0x0800057f
- 8000560:	08000595 	.word	0x08000595
- 8000564:	080005a7 	.word	0x080005a7
+ 8000540:	4b26      	ldr	r3, [pc, #152]	; (80005dc <main+0xc8>)
+ 8000542:	781b      	ldrb	r3, [r3, #0]
+ 8000544:	2b03      	cmp	r3, #3
+ 8000546:	d836      	bhi.n	80005b6 <main+0xa2>
+ 8000548:	a201      	add	r2, pc, #4	; (adr r2, 8000550 <main+0x3c>)
+ 800054a:	f852 f023 	ldr.w	pc, [r2, r3, lsl #2]
+ 800054e:	bf00      	nop
+ 8000550:	08000561 	.word	0x08000561
+ 8000554:	08000577 	.word	0x08000577
+ 8000558:	0800058d 	.word	0x0800058d
+ 800055c:	0800059f 	.word	0x0800059f
 	          case STATE_GREEN1_RED2:
 	              GreenToYellow1();
- 8000568:	f7ff ff64 	bl	8000434 <GreenToYellow1>
+ 8000560:	f7ff ff68 	bl	8000434 <GreenToYellow1>
 	              YellowToRed2();
- 800056c:	f7ff ff7e 	bl	800046c <YellowToRed2>
+ 8000564:	f7ff ff82 	bl	800046c <YellowToRed2>
 	              state = STATE_YELLOW1_RED2;
- 8000570:	4b1a      	ldr	r3, [pc, #104]	; (80005dc <main+0xc8>)
- 8000572:	2201      	movs	r2, #1
- 8000574:	701a      	strb	r2, [r3, #0]
-	              timer = 2;
- 8000576:	4b18      	ldr	r3, [pc, #96]	; (80005d8 <main+0xc4>)
- 8000578:	2202      	movs	r2, #2
- 800057a:	601a      	str	r2, [r3, #0]
+ 8000568:	4b1c      	ldr	r3, [pc, #112]	; (80005dc <main+0xc8>)
+ 800056a:	2201      	movs	r2, #1
+ 800056c:	701a      	strb	r2, [r3, #0]
+	              timer = 1;
+ 800056e:	4b1a      	ldr	r3, [pc, #104]	; (80005d8 <main+0xc4>)
+ 8000570:	2201      	movs	r2, #1
+ 8000572:	601a      	str	r2, [r3, #0]
 	              break;
- 800057c:	e01f      	b.n	80005be <main+0xaa>
+ 8000574:	e01f      	b.n	80005b6 <main+0xa2>
 
 	          case STATE_YELLOW1_RED2:
 	              YellowToRed1();
- 800057e:	f7ff ff21 	bl	80003c4 <YellowToRed1>
+ 8000576:	f7ff ff25 	bl	80003c4 <YellowToRed1>
 	              RedToGreen2();
- 8000582:	f7ff ff8f 	bl	80004a4 <RedToGreen2>
+ 800057a:	f7ff ff93 	bl	80004a4 <RedToGreen2>
 	              state = STATE_RED1_GREEN2;
- 8000586:	4b15      	ldr	r3, [pc, #84]	; (80005dc <main+0xc8>)
- 8000588:	2202      	movs	r2, #2
- 800058a:	701a      	strb	r2, [r3, #0]
-	              timer = 5;
- 800058c:	4b12      	ldr	r3, [pc, #72]	; (80005d8 <main+0xc4>)
- 800058e:	2205      	movs	r2, #5
- 8000590:	601a      	str	r2, [r3, #0]
+ 800057e:	4b17      	ldr	r3, [pc, #92]	; (80005dc <main+0xc8>)
+ 8000580:	2202      	movs	r2, #2
+ 8000582:	701a      	strb	r2, [r3, #0]
+	              timer = 4;
+ 8000584:	4b14      	ldr	r3, [pc, #80]	; (80005d8 <main+0xc4>)
+ 8000586:	2204      	movs	r2, #4
+ 8000588:	601a      	str	r2, [r3, #0]
 	              break;
- 8000592:	e014      	b.n	80005be <main+0xaa>
+ 800058a:	e014      	b.n	80005b6 <main+0xa2>
 
 	          case STATE_RED1_GREEN2:
 	              GreenToYellow2();
- 8000594:	f7ff ffa2 	bl	80004dc <GreenToYellow2>
+ 800058c:	f7ff ffa6 	bl	80004dc <GreenToYellow2>
 	              state = STATE_RED1_YELLOW2;
- 8000598:	4b10      	ldr	r3, [pc, #64]	; (80005dc <main+0xc8>)
- 800059a:	2203      	movs	r2, #3
- 800059c:	701a      	strb	r2, [r3, #0]
-	              timer = 2;
- 800059e:	4b0e      	ldr	r3, [pc, #56]	; (80005d8 <main+0xc4>)
- 80005a0:	2202      	movs	r2, #2
- 80005a2:	601a      	str	r2, [r3, #0]
+ 8000590:	4b12      	ldr	r3, [pc, #72]	; (80005dc <main+0xc8>)
+ 8000592:	2203      	movs	r2, #3
+ 8000594:	701a      	strb	r2, [r3, #0]
+	              timer = 1;
+ 8000596:	4b10      	ldr	r3, [pc, #64]	; (80005d8 <main+0xc4>)
+ 8000598:	2201      	movs	r2, #1
+ 800059a:	601a      	str	r2, [r3, #0]
 	              break;
- 80005a4:	e00b      	b.n	80005be <main+0xaa>
+ 800059c:	e00b      	b.n	80005b6 <main+0xa2>
 
 	          case STATE_RED1_YELLOW2:
 	              RedToGreen1();
- 80005a6:	f7ff ff29 	bl	80003fc <RedToGreen1>
+ 800059e:	f7ff ff2d 	bl	80003fc <RedToGreen1>
 	              YellowToRed2();
- 80005aa:	f7ff ff5f 	bl	800046c <YellowToRed2>
+ 80005a2:	f7ff ff63 	bl	800046c <YellowToRed2>
 	              state = STATE_GREEN1_RED2;
- 80005ae:	4b0b      	ldr	r3, [pc, #44]	; (80005dc <main+0xc8>)
- 80005b0:	2200      	movs	r2, #0
- 80005b2:	701a      	strb	r2, [r3, #0]
-	              timer = 3;
- 80005b4:	4b08      	ldr	r3, [pc, #32]	; (80005d8 <main+0xc4>)
- 80005b6:	2203      	movs	r2, #3
- 80005b8:	601a      	str	r2, [r3, #0]
+ 80005a6:	4b0d      	ldr	r3, [pc, #52]	; (80005dc <main+0xc8>)
+ 80005a8:	2200      	movs	r2, #0
+ 80005aa:	701a      	strb	r2, [r3, #0]
+	              timer = 2;
+ 80005ac:	4b0a      	ldr	r3, [pc, #40]	; (80005d8 <main+0xc4>)
+ 80005ae:	2202      	movs	r2, #2
+ 80005b0:	601a      	str	r2, [r3, #0]
 	              break;
- 80005ba:	e000      	b.n	80005be <main+0xaa>
+ 80005b2:	e000      	b.n	80005b6 <main+0xa2>
 	      }
 	  }
- 80005bc:	bf00      	nop
+ 80005b4:	bf00      	nop
 	  displayDigit(timer);
- 80005be:	4b06      	ldr	r3, [pc, #24]	; (80005d8 <main+0xc4>)
- 80005c0:	681b      	ldr	r3, [r3, #0]
- 80005c2:	4618      	mov	r0, r3
- 80005c4:	f7ff fe0a 	bl	80001dc <displayDigit>
+ 80005b6:	4b08      	ldr	r3, [pc, #32]	; (80005d8 <main+0xc4>)
+ 80005b8:	681b      	ldr	r3, [r3, #0]
+ 80005ba:	4618      	mov	r0, r3
+ 80005bc:	f7ff fe0e 	bl	80001dc <displayDigit>
+	  timer--;
+ 80005c0:	4b05      	ldr	r3, [pc, #20]	; (80005d8 <main+0xc4>)
+ 80005c2:	681b      	ldr	r3, [r3, #0]
+ 80005c4:	3b01      	subs	r3, #1
+ 80005c6:	4a04      	ldr	r2, [pc, #16]	; (80005d8 <main+0xc4>)
+ 80005c8:	6013      	str	r3, [r2, #0]
 
 	  HAL_Delay(1000);
- 80005c8:	f44f 707a 	mov.w	r0, #1000	; 0x3e8
- 80005cc:	f000 f986 	bl	80008dc <HAL_Delay>
+ 80005ca:	f44f 707a 	mov.w	r0, #1000	; 0x3e8
+ 80005ce:	f000 f985 	bl	80008dc <HAL_Delay>
 	  HAL_GPIO_TogglePin(GPIOA, LED_BLINK_Pin);
- 80005d0:	e7ae      	b.n	8000530 <main+0x1c>
- 80005d2:	bf00      	nop
+ 80005d2:	e7ad      	b.n	8000530 <main+0x1c>
  80005d4:	40010800 	.word	0x40010800
  80005d8:	2000002c 	.word	0x2000002c
  80005dc:	20000028 	.word	0x20000028
