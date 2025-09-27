@@ -220,7 +220,7 @@ int main(void)
 	  HAL_GPIO_TogglePin(GPIOA, LED_BLINK_Pin);
 
 	  displayDigit(timer);
-	  if (timer < 0) {
+	  if (timer <= 0) {
 	      // Chuyen trang thai
 	      switch (state) {
 	          case STATE_GREEN1_RED2:

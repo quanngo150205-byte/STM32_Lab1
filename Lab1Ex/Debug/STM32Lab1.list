@@ -634,11 +634,11 @@ int main(void)
  8000532:	681b      	ldr	r3, [r3, #0]
  8000534:	4618      	mov	r0, r3
  8000536:	f7ff fe51 	bl	80001dc <displayDigit>
-	  if (timer < 0) {
+	  if (timer <= 0) {
  800053a:	4b25      	ldr	r3, [pc, #148]	; (80005d0 <main+0xbc>)
  800053c:	681b      	ldr	r3, [r3, #0]
  800053e:	2b00      	cmp	r3, #0
- 8000540:	da38      	bge.n	80005b4 <main+0xa0>
+ 8000540:	dc38      	bgt.n	80005b4 <main+0xa0>
 	      // Chuyen trang thai
 	      switch (state) {
  8000542:	4b24      	ldr	r3, [pc, #144]	; (80005d4 <main+0xc0>)
