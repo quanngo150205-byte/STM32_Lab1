@@ -212,28 +212,29 @@ int main(void)
   /* USER CODE BEGIN 2 */
   clearAllLed();
   /* USER CODE END 2 */
-
+  RedToGreen1();
+  YellowToRed2();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
 	  HAL_GPIO_TogglePin(GPIOA, LED_BLINK_Pin);
 
-	  if (timer < 0) {
+	  if (timer <= 0) {
 	      // Chuyen trang thai
 	      switch (state) {
 	          case STATE_GREEN1_RED2:
 	              GreenToYellow1();
 	              YellowToRed2();
 	              state = STATE_YELLOW1_RED2;
-	              timer = 1;
+	              timer = 2;
 	              break;
 
 	          case STATE_YELLOW1_RED2:
 	              YellowToRed1();
 	              RedToGreen2();
 	              state = STATE_RED1_GREEN2;
-	              timer = 4;
+	              timer = 5;
 	              break;
 
 	          case STATE_RED1_GREEN2:
@@ -245,7 +246,7 @@ int main(void)
 	              RedToGreen1();
 	              YellowToRed2();
 	              state = STATE_GREEN1_RED2;
-	              timer = 2;
+	              timer = 3;
 	              break;
 	      }
 	  }
