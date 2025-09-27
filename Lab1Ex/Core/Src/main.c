@@ -50,7 +50,7 @@ typedef enum {
 } TrafficState;
 
 TrafficState state = STATE_GREEN1_RED2;
-int timer = 2;
+int timer = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -242,15 +242,16 @@ int main(void)
 	              break;
 
 	          case STATE_RED1_YELLOW2:
-	              YellowToRed2();
 	              RedToGreen1();
+	              YellowToRed2();
 	              state = STATE_GREEN1_RED2;
 	              timer = 2;
 	              break;
 	      }
 	  }
-	  displayDigit(timer);
+
 	  HAL_Delay(1000);
+	  displayDigit(timer);
 	  timer--;
     /* USER CODE END WHILE */
 
