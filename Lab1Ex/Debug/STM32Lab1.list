@@ -634,11 +634,11 @@ int main(void)
  8000532:	681b      	ldr	r3, [r3, #0]
  8000534:	4618      	mov	r0, r3
  8000536:	f7ff fe51 	bl	80001dc <displayDigit>
-	  if (timer <= 0) {
+	  if (timer < 0) {
  800053a:	4b25      	ldr	r3, [pc, #148]	; (80005d0 <main+0xbc>)
  800053c:	681b      	ldr	r3, [r3, #0]
  800053e:	2b00      	cmp	r3, #0
- 8000540:	dc38      	bgt.n	80005b4 <main+0xa0>
+ 8000540:	da38      	bge.n	80005b4 <main+0xa0>
 	      // Chuyen trang thai
 	      switch (state) {
  8000542:	4b24      	ldr	r3, [pc, #144]	; (80005d4 <main+0xc0>)
@@ -660,9 +660,9 @@ int main(void)
  8000568:	4b1a      	ldr	r3, [pc, #104]	; (80005d4 <main+0xc0>)
  800056a:	2201      	movs	r2, #1
  800056c:	701a      	strb	r2, [r3, #0]
-	              timer = 2;
+	              timer = 1;
  800056e:	4b18      	ldr	r3, [pc, #96]	; (80005d0 <main+0xbc>)
- 8000570:	2202      	movs	r2, #2
+ 8000570:	2201      	movs	r2, #1
  8000572:	601a      	str	r2, [r3, #0]
 	              break;
  8000574:	e01f      	b.n	80005b6 <main+0xa2>
@@ -676,9 +676,9 @@ int main(void)
  800057e:	4b15      	ldr	r3, [pc, #84]	; (80005d4 <main+0xc0>)
  8000580:	2202      	movs	r2, #2
  8000582:	701a      	strb	r2, [r3, #0]
-	              timer = 3;
+	              timer = 2;
  8000584:	4b12      	ldr	r3, [pc, #72]	; (80005d0 <main+0xbc>)
- 8000586:	2203      	movs	r2, #3
+ 8000586:	2202      	movs	r2, #2
  8000588:	601a      	str	r2, [r3, #0]
 	              break;
  800058a:	e014      	b.n	80005b6 <main+0xa2>
@@ -690,9 +690,9 @@ int main(void)
  8000590:	4b10      	ldr	r3, [pc, #64]	; (80005d4 <main+0xc0>)
  8000592:	2203      	movs	r2, #3
  8000594:	701a      	strb	r2, [r3, #0]
-	              timer = 2;
+	              timer = 1;
  8000596:	4b0e      	ldr	r3, [pc, #56]	; (80005d0 <main+0xbc>)
- 8000598:	2202      	movs	r2, #2
+ 8000598:	2201      	movs	r2, #1
  800059a:	601a      	str	r2, [r3, #0]
 	              break;
  800059c:	e00b      	b.n	80005b6 <main+0xa2>
@@ -706,24 +706,25 @@ int main(void)
  80005a6:	4b0b      	ldr	r3, [pc, #44]	; (80005d4 <main+0xc0>)
  80005a8:	2200      	movs	r2, #0
  80005aa:	701a      	strb	r2, [r3, #0]
-	              timer = 3;
+	              timer = 2;
  80005ac:	4b08      	ldr	r3, [pc, #32]	; (80005d0 <main+0xbc>)
- 80005ae:	2203      	movs	r2, #3
+ 80005ae:	2202      	movs	r2, #2
  80005b0:	601a      	str	r2, [r3, #0]
 	              break;
  80005b2:	e000      	b.n	80005b6 <main+0xa2>
 	      }
 	  }
  80005b4:	bf00      	nop
-	  timer--;
- 80005b6:	4b06      	ldr	r3, [pc, #24]	; (80005d0 <main+0xbc>)
- 80005b8:	681b      	ldr	r3, [r3, #0]
- 80005ba:	3b01      	subs	r3, #1
- 80005bc:	4a04      	ldr	r2, [pc, #16]	; (80005d0 <main+0xbc>)
- 80005be:	6013      	str	r3, [r2, #0]
+
 	  HAL_Delay(1000);
- 80005c0:	f44f 707a 	mov.w	r0, #1000	; 0x3e8
- 80005c4:	f000 f986 	bl	80008d4 <HAL_Delay>
+ 80005b6:	f44f 707a 	mov.w	r0, #1000	; 0x3e8
+ 80005ba:	f000 f98b 	bl	80008d4 <HAL_Delay>
+	  timer--;
+ 80005be:	4b04      	ldr	r3, [pc, #16]	; (80005d0 <main+0xbc>)
+ 80005c0:	681b      	ldr	r3, [r3, #0]
+ 80005c2:	3b01      	subs	r3, #1
+ 80005c4:	4a02      	ldr	r2, [pc, #8]	; (80005d0 <main+0xbc>)
+ 80005c6:	6013      	str	r3, [r2, #0]
 	  HAL_GPIO_TogglePin(GPIOA, LED_BLINK_Pin);
  80005c8:	e7ae      	b.n	8000528 <main+0x14>
  80005ca:	bf00      	nop

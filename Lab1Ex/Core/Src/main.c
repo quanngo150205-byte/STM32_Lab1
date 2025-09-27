@@ -50,7 +50,7 @@ typedef enum {
 } TrafficState;
 
 TrafficState state = STATE_GREEN1_RED2;
-int timer = 3;
+int timer = 2;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -220,40 +220,40 @@ int main(void)
 	  HAL_GPIO_TogglePin(GPIOA, LED_BLINK_Pin);
 
 	  displayDigit(timer);
-	  if (timer <= 0) {
+	  if (timer < 0) {
 	      // Chuyen trang thai
 	      switch (state) {
 	          case STATE_GREEN1_RED2:
 	              GreenToYellow1();
 	              YellowToRed2();
 	              state = STATE_YELLOW1_RED2;
-	              timer = 2;
+	              timer = 1;
 	              break;
 
 	          case STATE_YELLOW1_RED2:
 	              YellowToRed1();
 	              RedToGreen2();
 	              state = STATE_RED1_GREEN2;
-	              timer = 3;
+	              timer = 2;
 	              break;
 
 	          case STATE_RED1_GREEN2:
 	              GreenToYellow2();
 	              state = STATE_RED1_YELLOW2;
-	              timer = 2;
+	              timer = 1;
 	              break;
 
 	          case STATE_RED1_YELLOW2:
 	              YellowToRed2();
 	              RedToGreen1();
 	              state = STATE_GREEN1_RED2;
-	              timer = 3;
+	              timer = 2;
 	              break;
 	      }
 	  }
-	  timer--;
-	  HAL_Delay(1000);
 
+	  HAL_Delay(1000);
+	  timer--;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
