@@ -242,6 +242,8 @@ int main(void)
 		  		  state = STATE_GREEN1_RED2;
 		  		  timer = 2;
 		  		  break;
+		  	  default:
+		  		  break;
 		  }
 	  }
 
